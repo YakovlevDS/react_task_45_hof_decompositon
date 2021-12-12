@@ -1,14 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-class App extends React.Component {
-  render() {
-    return (
-      <div>
+const starWarsChars = [
+  {name: 'Дарт Вэйдер', side: 'dark'},
+  {name: 'Люк Скайворкер', side: 'light'},
+  {name: 'Палпатин', side: 'dark'},
+  {name: 'Обиван Кеноби', side: 'light'}
+]
 
-      </div>
-    )
-  }
+const App = ({list}) => (
+  <ul>
+    {list.map((char, index) => {
+      return (
+        <li key={char.name + index}>
+          <strong>{char.name}</strong> - &nbsp;
+          {char.side}
+        </li>
+      )
+    })}
+  </ul>
+)
+
+const withFilteredProps = Component => ({list, side}) => {
+  const filteredList = list.filter(char => char.side === side)
+  return <Component list={filteredList}/>
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const FilteredList = withFilteredProps(App)
+
+ReactDOM
+  .render(
+    <FilteredList list={starWarsChars} side="light"/>,
+    document.getElementById('root')
+  );
